@@ -61,10 +61,11 @@ if __name__ == '__main__':
             bboxes = bboxes + [-1,-1,1,1] # personal choice    
             results, score = learner.infer(conf, faces, targets, args.tta)
             for idx,bbox in enumerate(bboxes):
-                if args.score:
-                    img[i] = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), img[i])
-                else:
+                if args.score: 
+                    #args.score는 주로 false로 나오기때문에 boundingbox옆에 score가 나오게 하려면 else쪽으로 넣어야함.
                     img[i] = draw_box_name(bbox, names[results[idx] + 1], img[i])
+                else:
+                    img[i] = draw_box_name(bbox, names[results[idx] + 1] + '_{:.2f}'.format(score[idx]), img[i])
         except:
             print('detect error')    
             
