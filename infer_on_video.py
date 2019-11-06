@@ -1,3 +1,4 @@
+#main코드가 아니라 그냥 저장된 영상을 돌려보는 py였다. 
 import cv2
 from PIL import Image
 import argparse
