@@ -142,7 +142,7 @@ class MTCNN():
             xmin, ymin = bounding_boxes[:, 0], bounding_boxes[:, 1]
             landmarks[:, 0:5] = np.expand_dims(xmin, 1) + np.expand_dims(width, 1)*landmarks[:, 0:5]
             landmarks[:, 5:10] = np.expand_dims(ymin, 1) + np.expand_dims(height, 1)*landmarks[:, 5:10]
-
+            #landmark 가 feature값
             bounding_boxes = calibrate_box(bounding_boxes, offsets)
             keep = nms(bounding_boxes, nms_thresholds[2], mode='min')
             bounding_boxes = bounding_boxes[keep]
