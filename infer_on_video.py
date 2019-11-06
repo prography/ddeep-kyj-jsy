@@ -49,6 +49,7 @@ if __name__ == '__main__':
     fps = cap.get(cv2.CAP_PROP_FPS)
     video_writer = cv2.VideoWriter(str(conf.facebank_path/'{}.avi'.format(args.save_name)),
                                    cv2.VideoWriter_fourcc(*'XVID'), int(fps), (1280,720))
+    #video_writer부분에서 에러 발생..
     
     if args.duration != 0:
         i = 0
