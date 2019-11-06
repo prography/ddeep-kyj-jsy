@@ -61,7 +61,7 @@ if __name__ == '__main__':
             bboxes = bboxes + [-1,-1,1,1] # personal choice    
             results, score = learner.infer(conf, faces, targets, args.tta)
             num_face = len(results) #len(results)가 얼굴개수가나오므로 num_face라는 변수 서연이 만듬. 
-            print(len(results))
+            print(num_face)
             for idx,bbox in enumerate(bboxes):
                 if args.score: 
                     #args.score는 주로 false로 나오기때문에 boundingbox옆에 score가 나오게 하려면 else쪽으로 넣어야함.
