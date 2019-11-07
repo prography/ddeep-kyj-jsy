@@ -9,6 +9,7 @@ from mtcnn import MTCNN
 from Learner import face_learner
 from utils import load_facebank, draw_box_name, prepare_facebank
 import sys
+from face_recognition import face_compare
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
@@ -54,12 +55,11 @@ if __name__ == '__main__':
         try:
 #                 image = Image.fromarray(frame[...,::-1]) #bgr to rgb
             image = Image.fromarray(img[i])
-            print(i)
             bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
             bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
             bboxes = bboxes.astype(int)
             bboxes = bboxes + [-1,-1,1,1] # personal choice    
-            results, score = learner.infer(conf, faces, targets, args.tta)
+            results, score = face_compare(conf, learner.model, faces, targets, args.tta)
             num_face = len(results) #len(results)가 얼굴개수가나오므로 num_face라는 변수 서연이 만듬. 
             print(num_face)
             for idx,bbox in enumerate(bboxes):

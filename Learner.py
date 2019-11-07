@@ -245,6 +245,9 @@ class face_learner(object):
                 embs.append(self.model(conf.test_transform(img).to(conf.device).unsqueeze(0)))
         source_embs = torch.cat(embs)
         
+        #print(embs[0].shape)
+        print(target_embs.shape)
+        
         diff = source_embs.unsqueeze(-1) - target_embs.transpose(1,0).unsqueeze(0)
         dist = torch.sum(torch.pow(diff, 2), dim=1)
         minimum, min_idx = torch.min(dist, dim=1)
