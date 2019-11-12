@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jul 11 06:54:28 2017
-
-@author: zhaoyafei
-"""
-
 import numpy as np
 from numpy.linalg import inv, norm, lstsq
 from numpy.linalg import matrix_rank as rank
@@ -19,14 +12,12 @@ def tformfwd(trans, uv):
     Function:
     ----------
         apply affine transform 'trans' to uv
-
     Parameters:
     ----------
         @trans: 3x3 np.array
             transform matrix
         @uv: Kx2 np.array
             each row is a pair of coordinates (x, y)
-
     Returns:
     ----------
         @xy: Kx2 np.array
@@ -45,14 +36,12 @@ def tforminv(trans, uv):
     Function:
     ----------
         apply the inverse of affine transform 'trans' to uv
-
     Parameters:
     ----------
         @trans: 3x3 np.array
             transform matrix
         @uv: Kx2 np.array
             each row is a pair of coordinates (x, y)
-
     Returns:
     ----------
         @xy: Kx2 np.array
@@ -166,7 +155,6 @@ def get_similarity_transform(src_pts, dst_pts, reflective=True):
             x = dst_pts[:, 0]
             y = dst_pts[:, 1]
             [x, y, 1] = [u, v, 1] * trans
-
     Parameters:
     ----------
         @src_pts: Kx2 np.array
@@ -179,7 +167,6 @@ def get_similarity_transform(src_pts, dst_pts, reflective=True):
                 use reflective similarity transform
             else:
                 use non-reflective similarity transform
-
     Returns:
     ----------
        @trans: 3x3 np.array
@@ -207,12 +194,10 @@ def cvt_tform_mat_for_cv2(trans):
             x = dst_pts[:, 0]
             y = dst_pts[:, 1]
             [x, y].T = cv_trans * [u, v, 1].T
-
     Parameters:
     ----------
         @trans: 3x3 np.array
             transform matrix from uv to xy
-
     Returns:
     ----------
         @cv2_trans: 2x3 np.array
@@ -235,7 +220,6 @@ def get_similarity_transform_for_cv2(src_pts, dst_pts, reflective=True):
             x = dst_pts[:, 0]
             y = dst_pts[:, 1]
             [x, y].T = cv_trans * [u, v, 1].T
-
     Parameters:
     ----------
         @src_pts: Kx2 np.array
@@ -248,7 +232,6 @@ def get_similarity_transform_for_cv2(src_pts, dst_pts, reflective=True):
                 use reflective similarity transform
             else:
                 use non-reflective similarity transform
-
     Returns:
     ----------
         @cv2_trans: 2x3 np.array
@@ -267,7 +250,6 @@ if __name__ == '__main__':
     v = [0, 3, 5]
     x = [-1, 0, 4]
     y = [-1, -10, 4]
-
     # In Matlab, run:
     #
     #   uv = [u'; v'];

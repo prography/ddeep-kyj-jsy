@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Apr 24 15:43:29 2017
-@author: zhaoy
+Created on Tue Nov 12 17:42:42 2019
+
+@author: kyeoj
 """
+
 import numpy as np
 import cv2
 
@@ -300,5 +302,6 @@ def warp_and_crop_face(src_img,
 #    #print( tfm
 
     face_img = cv2.warpAffine(src_img, tfm, (crop_size[0], crop_size[1]))
-
+    
+    
     return face_img
