@@ -31,6 +31,15 @@ def register():
     print(register_np)
 
     return "register success!"
+@app.route('/learn',methods=["POST"])
+def learn():
+    print(">>>>>>>>>>>>>")
+
+    face_name = request.json['name']
+    #learn_np = np.array(learn_score)
+    print(face_name)
+    
+    return "register success!"
 
 if __name__ =='__main__':
    app.run(host='0.0.0.0', port=5000,debug=True)

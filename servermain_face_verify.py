@@ -1,3 +1,4 @@
+#server측에 인식된 얼굴의 정보 보냄.
 import cv2
 from PIL import Image
 import argparse

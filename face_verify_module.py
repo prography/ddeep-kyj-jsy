@@ -23,7 +23,7 @@ cap = cv2.VideoCapture(0)
 cap.set(3, 1280)
 cap.set(4, 720)
 
-def fn_face_verify():
+def fn_face_verify_module():
     mtcnn = MTCNN()
     print('mtcnn loaded')
     learner = face_learner(conf, True)
@@ -66,7 +66,7 @@ def fn_face_verify():
 
 
 while cap.isOpened():
-    fn_face_verify()
-    if cv2.waitKey(1)&0xFF == ord('t'):
+    fn_face_verify_module()
+    if cv2.waitKey(1)&0xFF == ord('q'):
         break
 
