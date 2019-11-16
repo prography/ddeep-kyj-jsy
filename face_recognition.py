@@ -37,3 +37,22 @@ def check_features(emb, target_embs):
             max_idx = i
             max_sim = sim
     return max_idx, max_sim
+
+def get_face_feature(conf, model, img, tta=False):
+    if tta:
+        mirror = trans.functional.hflip(img)
+        emb = model(conf.test_transform(img).to(conf.device).unsqueeze(0))
+        emb_mirror = model(conf.test_transform(mirror).to(conf.device).unsqueeze(0))
+        feature = l2_norm(emb + emb_mirror)
+    else:
+        feature = model(conf.test_transform(img).to(conf.device).unsqueeze(0))
+    
+    return feature
+
+def get_max_cos(main_feature, compared_feature_list):
+    max_sim = 0
+    for com_feature in compared_feature_list:
+        sim = cosine_similarity(main_feature, com_feature)
+        if(sim>max_sim):
+            max_sim = sim
+    return max_sim
