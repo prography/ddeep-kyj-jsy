@@ -53,8 +53,8 @@ if __name__ == '__main__':
     
     for i in range(5):
         try:
-#                 image = Image.fromarray(frame[...,::-1]) #bgr to rgb
-            image = Image.fromarray(img[i])
+            image = Image.fromarray(img[i][...,::-1]) #bgr to rgb
+#            image = Image.fromarray(img[i])
             print('----------------------------------')
             bboxes, faces = mtcnn.align_multi(image, conf.face_limit, conf.min_face_size)
             bboxes = bboxes[:,:-1] #shape:[10,4],only keep 10 highest possibiity faces
