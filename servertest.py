@@ -49,14 +49,16 @@ def register_check():
     face_list = request.json['face_list']
     check_list = []
     for face in face_list:
-        feature = get_face_feature(conf, learner.model, face)
+        face = np.array(face)
+        pil_img = Image.fromarray(face, mode='RGB')
+        feature = get_face_feature(conf, learner.model, pil_img)
         cos_sim = get_max_cos(feature, register_list)
         if cos_sim > 0.7:
             check_list.append("known")
         else:
             check_list.append("unknown")
-    
-    return check_list
+        check_list = {'check_list': check_list}
+    return jsonify(check_list)
 
 if __name__ =='__main__':
    app.run(host='0.0.0.0', port=5000,debug=True)
