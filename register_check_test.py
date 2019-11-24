@@ -39,6 +39,13 @@ if __name__ == '__main__':
     img.append(cv2.imread('data/input/olsen/olsen.jpg'))
     
     faces=[]
+    re_img = Image.fromarray(img[0][...,::-1])
+    re_img = mtcnn.align(re_img)
+    tolist_face = np.array(re_img).tolist()
+    URL = server + "register"
+    json_feed = {'face_image': tolist_face}
+    response = requests.post(URL, json=json_feed)
+    print(response)
     
     for i in range(5):
     

@@ -23,7 +23,7 @@ server = "http://127.0.0.1:5000/"
 register_list=[] 
 conf = get_config(False) 
 learner = face_learner(conf, True)
-learner.threshold = args.threshold
+learner.threshold = 1.54
 if conf.device.type == 'cpu':
     learner.load_state(conf, 'cpu_final.pth', True, True)
 else:
@@ -37,9 +37,10 @@ def register():
 
     register_face = request.json['face_image']
     register_np = np.array(register_face)
-    
-    print(register_np)
-
+    register_pil = Image.fromarray(register_np, mode='RGB')
+    feature = get_face_feature(conf, learner.model, register_pil)
+    register_list.append(feature)
+    print(register_list)
     return "register success!"
 
 @app.route('/register_check',methods=["POST"])
@@ -53,11 +54,12 @@ def register_check():
         pil_img = Image.fromarray(face, mode='RGB')
         feature = get_face_feature(conf, learner.model, pil_img)
         cos_sim = get_max_cos(feature, register_list)
-        if cos_sim > 0.7:
+        if cos_sim > 0.9:
             check_list.append("known")
         else:
             check_list.append("unknown")
-        check_list = {'check_list': check_list}
+    print(check_list)
+    check_list = {'check_list': check_list}
     return jsonify(check_list)
 
 if __name__ =='__main__':
