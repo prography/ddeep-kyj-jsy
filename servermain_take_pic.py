@@ -55,29 +55,23 @@ def get_pic():
 
     if cv2.waitKey(1) & 0xFF == ord('t'):
         p = Image.fromarray(frame[..., ::-1])
-        j = 0
+
         try:
-            warped_face = np.array(mtcnn.align(p))[..., ::-1] #이부분에서 feature값을 출력.
+            warped_face = np.array(mtcnn.align(p))[..., ::-1]
+
+            re_img = mtcnn.align(p)
+            tolist_face = np.array(re_img).tolist()
 
             cv2.imwrite(str(save_path / '{}.jpg'.format(str(datetime.now())[:-7].replace(":", "-").replace(" ", "-"))),
                         warped_face)
-
-
-            print(warped_face)
             URL = server + "register"
-            tolist_img = warped_face.tolist()
-            print("------------------------")
-            print(tolist_img)
 
-            json_feed = {'face_list': tolist_img}
+            json_feed = {'face_image': tolist_face}
             response = requests.post(URL, json=json_feed)
+            print(response)
 
-            return warped_face
         except:
             print('no face captured')
-
-
-
 
 while cap.isOpened():
     get_pic()
