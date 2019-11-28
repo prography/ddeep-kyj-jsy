@@ -50,7 +50,7 @@ if args.update:
 else:
     targets, names = load_facebank(conf)
     print('facebank loaded')
-    #try문을 추가하니까 잘되유!
+
 def get_pic():
     isSuccess, frame = cap.read()
 
@@ -68,6 +68,7 @@ def get_pic():
             URL = server + "register_check"
             json_feed_verify = {'face_list': face_list}
             response = requests.post(URL, json=json_feed_verify)
+            print(response)
             check_list = response.json()["check_list"]
             for idx, bbox in enumerate(bboxes):
                 if check_list[idx] == 'unknown':
@@ -87,14 +88,11 @@ def get_pic():
             tolist_face = np.array(re_img).tolist()
             URL = server + "register"
             tolist_img = warped_face.tolist()
-            json_feed = {'face_list': tolist_face}
+            json_feed = {'face_image': tolist_face}
             response = requests.post(URL, json=json_feed)
 
         except:
             print('no face captured')
-
-
-
 
 while cap.isOpened():
     get_pic()
