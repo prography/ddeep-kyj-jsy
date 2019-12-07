@@ -32,18 +32,9 @@ print("mtcnn loaded")
 learner = face_learner(conf, True)
 
 learner.threshold = args.threshold
-if conf.device.type == 'cpu':
-    learner.load_state(conf, 'cpu_final.pth', True, True)
-else:
-    learner.load_state(conf, 'final.pth', True, True)
+
 learner.model.eval()
 print('learner loaded')
-if args.update:
-    targets, names = prepare_facebank(conf, learner.model, mtcnn, tta=args.tta)
-    print('facebank updated')
-else:
-    targets, names = load_facebank(conf)
-    print('facebank loaded')
 
 
 # 여기서 frame을 받아서 frame에서 얼굴 detection + blur칠수있도록 bboxes 데이터까지 보내주기.
@@ -52,12 +43,13 @@ def getframe():
     # 여기서 frame받음. 얼굴 detection
     print("===============")
 
-    get_frame = request.json['frame_to_server']
+    get_frame = request.json['full_frame']
     # print(type(get_frame))
 
     np_frame = np.array(get_frame)
+    np_frame = np.uint8(np_frame)
     print(np_frame)
-    pil_frame = Image.fromarray(np_frame, mode='RGB')
+    pil_frame = Image.fromarray(np_frame[...,::-1])
 
     bboxes, faces = mtcnn.align_multi(pil_frame, conf.face_limit, conf.min_face_size)
 

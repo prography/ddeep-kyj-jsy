@@ -47,20 +47,26 @@ if __name__ == '__main__':
     response = requests.post(URL, json=json_feed)
     print(response)
     
+    tolist_face = img[1].tolist()
+    URL = server + "getframe"
+    json_feed = {'face_list': tolist_face}
+    response = requests.post(URL, json=json_feed)
+ 
+    '''   
     for i in range(5):
     
         image = Image.fromarray(img[i][...,::-1]) #bgr to rgb
     #            image = Image.fromarray(img[i])
-        image = mtcnn.align(image)
-        print(image)
+        #image = mtcnn.align(image)
+        #print(image)
         tolist_face = np.array(image).tolist()
         faces.append(tolist_face) 
             
            
-    URL = server + "register_check"
+    URL = server + "getframe"
     json_feed = {'face_list': faces}
     response = requests.post(URL, json=json_feed)
     
     print(response)
     
-        
+    '''      

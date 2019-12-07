@@ -67,7 +67,10 @@ def get_pic():
 
             URL = server + "register_check"
             json_feed_verify = {'face_list': face_list}
+            start_time = datetime.now()
             response = requests.post(URL, json=json_feed_verify)
+            finish_time = datetime.now()
+            print('register check time:', finish_time - start_time)
             print(response)
             check_list = response.json()["check_list"]
             for idx, bbox in enumerate(bboxes):
@@ -75,7 +78,9 @@ def get_pic():
                     frame[bbox[1] : bbox[3], bbox[0] : bbox[2]] = cv2.blur(frame[bbox[1] : bbox[3], bbox[0] : bbox[2]], (23,23))
                 else:
                     frame = draw_box_name(bbox,"known", frame)
-
+            
+            
+            
             cv2.imshow("My Capture", frame)
         except:
             print("detect error")
@@ -89,7 +94,9 @@ def get_pic():
             URL = server + "register"
             tolist_img = warped_face.tolist()
             json_feed = {'face_image': tolist_face}
+            sregister = datetime.now()
             response = requests.post(URL, json=json_feed)
+            fregister = datetime.now()
 
         except:
             print('no face captured')
