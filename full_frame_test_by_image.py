@@ -11,6 +11,7 @@ from utils import load_facebank, draw_box_name, prepare_facebank
 import sys
 import requests
 from face_recognition import face_compare
+import numpy as np
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='for face verification')
@@ -40,13 +41,20 @@ if __name__ == '__main__':
     URL = server + "register"
     json_feed = {'face_image': register_face}
     response = requests.post(URL, json=json_feed)
-    print(response)
+    print(response.text)
     
     blur_img = img[1].tolist()
     URL = server + "register_check"
     json_feed = {'face_list': blur_img}
     response = requests.post(URL, json=json_feed)
-    print(response)
+    res = response.json()
+    res = res['check_img']
+    res = np.array(res)
+    res = np.uint8(res)
+    print(res)
+    cv2.imshow('image', res)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
     
     '''
     

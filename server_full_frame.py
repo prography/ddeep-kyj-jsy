@@ -44,7 +44,7 @@ def register():
     register_face = request.json['face_image']
     register_np = np.array(register_face)
     register_np = np.uint8(register_np)
-    register_pil = Image.fromarray(register_np[...,::-1])
+    register_pil = Image.fromarray(register_np)
    
     bboxes, faces = mtcnn.align_multi(register_pil, conf.face_limit, conf.min_face_size)
     for face in faces:
@@ -60,7 +60,7 @@ def register_check():
 
     check_img = request.json['face_list']
     check_np = np.array(check_img)
-    check_np = np.uint8(check_np)[...,::-1]
+    check_np = np.uint8(check_np)
     check_pil = Image.fromarray(check_np)
     
     bboxes, faces = mtcnn.align_multi(check_pil, conf.face_limit, conf.min_face_size)
@@ -71,6 +71,7 @@ def register_check():
     for idx,bbox in enumerate(bboxes):
         feature = get_face_feature(conf, learner.model, faces[idx])
         cos_sim = get_max_cos(feature, register_list)
+
         if cos_sim < 0.9:
             check_np[bbox[1] : bbox[3], bbox[0] : bbox[2]] = cv2.blur(check_np[bbox[1] : bbox[3], bbox[0] : bbox[2]], (23,23))
     tolist_img = check_np.tolist()
