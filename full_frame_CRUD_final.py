@@ -34,12 +34,14 @@ print('mtcnn loaded')
 
 def ddeep():
     isSuccess, frame = cap.read()
-    default_name=[]
-
     if isSuccess:
         try:
+            print("wait for loading ... ")
             image = Image.fromarray(frame)
+            cv2.imshow('DDeeP',frame)
+            """
             frame_to_server = np.array(image).tolist()
+            
             URL = server + "register_check"
             json_feed = {'full_frame': frame_to_server}
             response = requests.post(URL, json=json_feed)
@@ -47,47 +49,49 @@ def ddeep():
             res = np.array(res)
             res = np.uint8(res)
             cv2.imshow('image', res)
+            """
+            if cv2.waitKey(1) & 0xFF == ord('r'):
+                takepic = Image.fromarray(frame[..., ::-1])
+                try:
+                    register_face = np.array(takepic).tolist()
+                    name = 'A'
+                    URL = server + "register"
+                    json_feed = {'register_image': register_face, 'register_name': name}
+                    response = requests.post(URL, json=json_feed)
+                    print(response.text)
+                except:
+                    print('error in register process')
+            # 키보드에서 c를 누르면 confirm
+            if cv2.waitKey(0) & 0xFF == ord('c'):
+                URL = server + "ReadFeature"
+                params = {'name': 'A'}
+                res = requests.get(URL, params=params)
+                res = res.json()
+                res = res['result']
+                print(res)
+            # 키보드에서 n를 누르면 name update
+            if cv2.waitKey(0) & 0xFF == ord('n'):
+                URL = server + 'update'
+                params = {'old_name': 'A', 'new_name': 'NEW'}
+                res = requests.get(URL, params=params)
+                print(res.text)
+            # 키보드에서 u를 누르면 등록된 얼굴을 update할 수 있다.
+            if cv2.waitKey(0) & 0xFF == ord('u'):
+                newpic = Image.fromarray(frame[..., ::-1])
+                new_img = np.array(newpic).tolist()
+                URL = server + 'update'
+                json_feed = {'name': 'NEW', 'new_image': new_img}
+                res = requests.post(URL, json=json_feed)
+            # 키보드에서 d를 누르면 삭제가능.
+            if cv2.waitKey(0) & 0xFF == ord('d'):
+                URL = server + 'delete'
+                params = {'name': 'NEW'}
+                res = requests.delete(URL, params=params)
+                print(res.text)
         except:
             print("detect error")
     #키보드에서 r을 누르면, register가 가능함.
-    if cv2.waitkey(1) & 0xFF == ord('r'):
-        takepic=Image.fromarray(frame[...,::-1])
-        try:
-            register_face = np.array(takepic).tolist()
-            name='A'
-            URL = server +"register"
-            json_feed = {'register_image': register_face, 'register_name': name}
-            response=requests.post(URL,json=json_feed)
-            print(response.text)
-        except:
-            print('error in register process')
-    #키보드에서 c를 누르면 confirm
-    if cv2.waitkey(0) &0xFF == ord('c'):
-        URL = server + "ReadFeature"
-        params = {'name': 'A'}
-        res = requests.get(URL, params=params)
-        res = res.json()
-        res = res['result']
-        print(res)
-    #키보드에서 n를 누르면 name update
-    if cv2.waitkey(0) & 0xFF == ord('n'):
-        URL = server + 'update'
-        params = {'old_name': 'A', 'new_name':'NEW'}
-        res = requests.get(URL, params=params)
-        print(res.text)
-    #키보드에서 u를 누르면 등록된 얼굴을 update할 수 있다.
-    if cv2.waitkey(0)  & 0xFF ==ord('u'):
-        newpic = Image.fromarray(frame[..., ::-1])
-        new_img = np.array(newpic).tolist()
-        URL = server +'update'
-        json_feed = {'name': 'NEW', 'new_image': new_img}
-        res=requests.post(URL,json=json_feed)
-    #키보드에서 d를 누르면 삭제가능.
-    if cv2.waitkey(0) & 0xFF == ord('d'):
-        URL = server + 'delete'
-        params = {'name': 'NEW'}
-        res = requests.delete(URL, params=params)
-        print(res.text)
+
 
 while cap.isOpened():
     ddeep()
