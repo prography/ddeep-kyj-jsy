@@ -114,7 +114,6 @@ def delete():
 @app.route('/register_check',methods=["POST"])
 def register_check():
     print(">>>>>>>>>>>>>")
-
     check_img = request.json['full_frame']
     check_np = np.array(check_img)
     check_np = np.uint8(check_np)
@@ -135,9 +134,6 @@ def register_check():
     
     check_img = {'check_img': tolist_img}
     return jsonify(check_img)
-
-
-
 
 
 if __name__ == '__main__':

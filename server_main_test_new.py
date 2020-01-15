@@ -36,22 +36,6 @@ cap.set(4, 720)
 
 mtcnn = MTCNN()
 print('mtcnn loaded')
-learner = face_learner(conf, True)
-learner.threshold = args.threshold
-if conf.device.type == 'cpu':
-    learner.load_state(conf, 'cpu_final.pth', True, True)
-else:
-    learner.load_state(conf, 'final.pth', True, True)
-learner.model.eval()
-print('learner loaded')
-
-if args.update:
-    targets, names = prepare_facebank(conf, learner.model, mtcnn, tta=args.tta)
-    print('facebank updated')
-else:
-    targets, names = load_facebank(conf)
-    print('facebank loaded')
-
 
 def get_pic():
     isSuccess, frame = cap.read()
